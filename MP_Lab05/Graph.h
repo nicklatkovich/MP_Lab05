@@ -5,6 +5,7 @@
 #include <tuple>
 #include <queue>
 #include <stack>
+#include <exception>
 
 template <class T>
 class Graph {
@@ -81,6 +82,40 @@ public:
 				result.push_back(cell);
 				passes[cell] = BLACK;
 				q.pop();
+			}
+		}
+		return result;
+	}
+	std::vector<unsigned int> TopologicalSorting(T wayValue) {
+		std::vector<unsigned int> result;
+		AMatrix<bool> temp(_matrix.GetWidth(), _matrix.GetHeight());
+		for (unsigned int i = 0; i < GetSize(); i++) {
+			for (unsigned int j = 0; j < GetSize(); j++) {
+				temp.Set(i, j, _matrix.Get(i, j) == wayValue);
+			}
+		}
+		while (result.size() != GetSize()) {
+			bool hasMove = false;
+			for (unsigned int i = 0; i < GetSize(); i++) {
+				bool isIndependent = true;
+				for (unsigned int j = 0; j < GetSize(); j++) {
+					if (i != j) {
+						if (temp.Get(j, i)) {
+							isIndependent = false;
+							break;
+						}
+					}
+				}
+				if (isIndependent) {
+					result.push_back(i);
+					for (unsigned int j = 0; j < GetSize(); j++) {
+						temp.Set(i, j, false);
+					}
+					hasMove = true;
+				}
+			}
+			if (hasMove == false) {
+				throw std::exception("Graph is contour");
 			}
 		}
 		return result;
