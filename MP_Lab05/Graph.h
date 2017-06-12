@@ -1,6 +1,8 @@
 #pragma once
 #include "AMatrix.h"
 #include <algorithm>
+#include <list>
+#include <tuple>
 
 template <class T>
 class Graph {
@@ -22,4 +24,12 @@ public:
 	friend std::ostream& operator << (std::ostream& out, Graph& g) {
 		return out << g._matrix;
 	}
+	static Graph<T> CreateGraph(unsigned int size, std::list<std::tuple<unsigned int, unsigned int>> list, T emptyWayValue, T wayValue) {
+		Graph<T> result(AMatrix<T>(size, size, emptyWayValue));
+		for each (std::tuple<unsigned int, unsigned int> way in list) {
+			result._matrix.Set(std::get<0>(way), std::get<1>(way), wayValue);
+		}
+		return result;
+	}
+
 };

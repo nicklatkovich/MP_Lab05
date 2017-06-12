@@ -6,14 +6,16 @@
 template <class T>
 class AMatrix {
 private:
-	T** _arr;
+	T** _arr = 0;
 	unsigned int _width;
 	unsigned int _height;
 	void Clear() {
-		for (unsigned int i = 0; i < GetWidth(); i++) {
-			delete[] _arr[i];
+		if (_arr) {
+			for (unsigned int i = 0; i < GetWidth(); i++) {
+				delete[] _arr[i];
+			}
+			delete[] _arr;
 		}
-		delete[] _arr;
 	}
 	void Init(unsigned int width, unsigned int height) {
 		_width = width;
@@ -48,7 +50,7 @@ public:
 		Clear();
 	}
 	AMatrix(AMatrix<T>& copy) {
-		this = copy;
+		*this = copy;
 	}
 	unsigned int GetWidth() {
 		return _width;
