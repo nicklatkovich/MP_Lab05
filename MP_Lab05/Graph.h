@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <list>
 #include <tuple>
+#include <queue>
 
 template <class T>
 class Graph {
@@ -31,5 +32,26 @@ public:
 		}
 		return result;
 	}
-
+	unsigned int GetSize() {
+		return _matrix.GetWidth();
+	}
+	std::vector<unsigned int> BFS(T wayValue, unsigned int start = 0) {
+		std::vector<unsigned int> result;
+		std::vector<bool> passes(GetSize());
+		std::queue<unsigned int> q;
+		q.push(start);
+		passes[start] = true;
+		while (q.empty() == false) {
+			unsigned int cell = q.front();
+			q.pop();
+			result.push_back(cell);
+			for (unsigned int i = 0; i < GetSize(); i++) {
+				if (passes[i] == false && _matrix.Get(cell, i) == wayValue) {
+					passes[i] = true;
+					q.push(i);
+				}
+			}
+		}
+		return result;
+	}
 };
