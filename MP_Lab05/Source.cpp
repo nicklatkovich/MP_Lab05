@@ -1,14 +1,7 @@
 #include "Graph.h"
 #include <vector>
 #include <iostream>
-
-template <class T>
-std::ostream& operator << (std::ostream& out, std::vector<T> v) {
-	for each (T var in v) {
-		out << var << " ";
-	}
-	return out;
-}
+#include "Utils.h"
 
 void main() {
 	//Graph<int> m(AMatrix<int>(5u, 5u, std::vector<int>{
@@ -28,5 +21,13 @@ void main() {
 		std::make_tuple(4, 0),
 	}), 0, 1);
 	std::cout << m << std::endl;
-	std::cout << "BFS = " << m.BFS(1) << std::endl;
+	{
+		using namespace SU;
+		std::cout << "BFS = " << m.BFS(1) << std::endl;
+	}
+
+#ifdef _DEBUG
+	std::cin.get();
+#endif // _DEBUG
+
 }
