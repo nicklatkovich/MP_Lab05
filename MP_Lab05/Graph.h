@@ -4,6 +4,7 @@
 #include <list>
 #include <tuple>
 #include <queue>
+#include <stack>
 
 template <class T>
 class Graph {
@@ -50,6 +51,36 @@ public:
 					passes[i] = true;
 					q.push(i);
 				}
+			}
+		}
+		return result;
+	}
+	std::vector<unsigned int> DFS(T wayValue, unsigned int start = 0) {
+		std::vector<unsigned int> result;
+		const int WHITE = 0;
+		const int GRAY = 1;
+		const int BLACK = 2;
+		std::vector<int> passes(GetSize());
+		for (unsigned int i = 0; i < GetSize(); i++) {
+			passes[i] = WHITE;
+		}
+		passes[start] = GRAY;
+		std::stack<unsigned int> q;
+		q.push(start);
+		while (q.empty() == false) {
+			unsigned int cell = q.top();
+			bool hasWay = false;
+			for (unsigned int i = GetSize(); i > 0; i--) {
+				if (passes[i - 1] == WHITE && _matrix.Get(cell, i - 1) == wayValue) {
+					passes[i - 1] = GRAY;
+					q.push(i - 1);
+					hasWay = true;
+				}
+			}
+			if (hasWay == false) {
+				result.push_back(cell);
+				passes[cell] = BLACK;
+				q.pop();
 			}
 		}
 		return result;

@@ -24,6 +24,7 @@ void main() {
 	{
 		using namespace SU;
 		std::cout << "BFS = " << m.BFS(1) << std::endl;
+		std::cout << "DFS = " << m.DFS(1) << std::endl;
 	}
 
 #ifdef _DEBUG
