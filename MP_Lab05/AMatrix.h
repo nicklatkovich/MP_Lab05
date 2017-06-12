@@ -1,4 +1,7 @@
 #pragma once
+#include "Utils.h"
+#include <vector>
+#include <ostream>
 
 template <class T>
 class AMatrix {
@@ -13,21 +16,33 @@ private:
 		delete[] _arr;
 	}
 	void Init(unsigned int width, unsigned int height) {
-		_width = copy.GetWidth();
-		_height = copy.GetHeight();
+		_width = width;
+		_height = height;
 		_arr = new T*[GetWidth()];
 		for (unsigned int i = 0; i < GetWidth(); i++) {
-			_arr = new T[GetHeight()];
+			_arr[i] = new T[GetHeight()];
 		}
 	}
 public:
-	AMatrix(unsigned int width, unsigned int height, T defaultValue = default(T)) {
-		Init(width, height);
+	AMatrix(unsigned int width, unsigned int height, T defaultValue) : AMatrix(width, height) {
 		for (unsigned int i = 0; i < GetWidth(); i++) {
 			for (unsigned int j = 0; j < GetHeight(); j++) {
 				Set(i, j, defaultValue);
 			}
 		}
+	}
+	AMatrix(unsigned int width, unsigned int height) {
+		Init(width, height);
+	}
+	AMatrix(unsigned int width, unsigned int height, std::vector<T> values) : AMatrix(width, height) {
+		for (unsigned int i = 0; i < GetWidth(); i++) {
+			for (unsigned int j = 0; j < GetHeight(); j++) {
+				Set(i, j, values[(i * GetHeight() + j) % values.size()]);
+			}
+		}
+	}
+	AMatrix() : AMatrix(1, 1) {
+
 	}
 	~AMatrix() {
 		Clear();
@@ -55,5 +70,15 @@ public:
 				Set(i, j, copy.Get(i, j));
 			}
 		}
+		return *this;
+	}
+	friend std::ostream& operator << (std::ostream& out, AMatrix& m) {
+		for (unsigned int i = 0; i < m.GetWidth(); i++) {
+			for (unsigned int j = 0; j < m.GetHeight(); j++) {
+				out << m.Get(i, j) << " ";
+			}
+			out << std::endl;
+		}
+		return out;
 	}
 };
